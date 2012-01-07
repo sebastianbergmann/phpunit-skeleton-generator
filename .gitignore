@@ -1,0 +1,12 @@
+build/api
+build/code-browser
+build/coverage
+build/logs
+build/pdepend
+Tests/*.diff
+Tests/*.exp
+Tests/*.log
+Tests/*.out
+Tests/*.php
+cache.properties
+phpunit.xml

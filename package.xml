@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.4.10" version="2.0"
+  xmlns="http://pear.php.net/dtd/package-2.0"
+  xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+                      http://pear.php.net/dtd/tasks-1.0.xsd
+                      http://pear.php.net/dtd/package-2.0
+                      http://pear.php.net/dtd/package-2.0.xsd">
+ <name>PHPUnit_SkeletonGenerator</name>
+ <channel>pear.phpunit.de</channel>
+ <summary>Tool that can generate skeleton test classes from production code classes and vice versa.</summary>
+ <description>Tool that can generate skeleton test classes from production code classes and vice versa.</description>
+ <lead>
+  <name>Sebastian Bergmann</name>
+  <user>sb</user>
+  <email>sebastian@phpunit.de</email>
+  <active>yes</active>
+ </lead>
+ <date>2012-01-09</date>
+ <version>
+ <release>1.0.0</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license>BSD License</license>
+ <notes>http://github.com/sebastianbergmann/phpunit-skeleton-generator/blob/master/README.markdown</notes>
+ <contents>
+  <dir name="/">
+   <dir name="PHPUnit">
+    <dir name="SkeletonGenerator">
+     <dir name="Template">
+      <file baseinstalldir="/" name="Class.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="IncompleteTestMethod.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Method.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="TestClass.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="TestMethod.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="TestMethodStatic.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="TestMethodBool.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="TestMethodBoolStatic.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="TestMethodException.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="TestMethodExceptionStatic.tpl.dist" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <dir name="TextUI">
+      <file baseinstalldir="/" name="Command.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <file baseinstalldir="/" name="Autoload.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="Class.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="Test.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir>
+    <file baseinstalldir="/" name="SkeletonGenerator.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir>
+   <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
+   <file baseinstalldir="/" name="LICENSE" role="doc"/>
+   <file baseinstalldir="/" name="README.markdown" role="doc"/>
+   <file baseinstalldir="/" name="phpunit-skelgen.php" role="script">
+    <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config"/>
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+    <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" name="phpunit-skelgen.bat" role="script">
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+    <tasks:replace from="@bin_dir@" to="bin_dir" type="pear-config" />
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.7</min>
+   </php>
+   <pearinstaller>
+    <min>1.9.4</min>
+   </pearinstaller>
+   <package>
+    <name>ConsoleTools</name>
+    <channel>components.ez.no</channel>
+    <min>1.6</min>
+   </package>
+   <package>
+    <name>Text_Template</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.1.1</min>
+   </package>
+   <extension>
+    <name>pcre</name>
+   </extension>
+   <extension>
+    <name>reflection</name>
+   </extension>
+  </required>
+ </dependencies>
+ <phprelease>
+  <installconditions>
+   <os>
+    <name>windows</name>
+   </os>
+  </installconditions>
+  <filelist>
+   <install as="phpunit-skelgen" name="phpunit-skelgen.php" />
+   <install as="phpunit-skelgen.bat" name="phpunit-skelgen.bat" />
+  </filelist>
+ </phprelease>
+ <phprelease>
+  <filelist>
+   <install as="phpunit-skelgen" name="phpunit-skelgen.php" />
+   <ignore name="phpunit-skelgen.bat" />
+  </filelist>
+ </phprelease>
+</package>
