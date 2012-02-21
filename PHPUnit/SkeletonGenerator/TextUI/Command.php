@@ -65,6 +65,14 @@ class PHPUnit_SkeletonGenerator_TextUI_Command
         $input->registerOption(
           new ezcConsoleOption(
             '',
+            'bootstrap',
+            ezcConsoleInput::TYPE_STRING
+           )
+        );
+
+        $input->registerOption(
+          new ezcConsoleOption(
+            '',
             'class',
             ezcConsoleInput::TYPE_NONE
            )
@@ -132,6 +140,7 @@ class PHPUnit_SkeletonGenerator_TextUI_Command
         }
 
         $arguments = $input->getArguments();
+        $bootstrap = $input->getOption('bootstrap')->value;
         $class     = $input->getOption('class')->value;
         $test      = $input->getOption('test')->value;
 
@@ -149,6 +158,10 @@ class PHPUnit_SkeletonGenerator_TextUI_Command
         }
 
         self::printVersionString();
+
+        if ($bootstrap && file_exists($bootstrap)) {
+            include $bootstrap;
+        }
 
         $generator = $reflector->newInstanceArgs($arguments);
         $generator->write();
@@ -189,11 +202,13 @@ Usage: phpunit-skelgen --class ClassTest
        phpunit-skelgen --test Class [Class.php] [ClassTest] [ClassTest.php]
        phpunit-skelgen --test -- Class [Class.php] [ClassTest] [ClassTest.php]
 
-  --class    Generate Class [in Class.php] based on ClassTest [in ClassTest.php]
-  --test     Generate ClassTest [in ClassTest.php] based on Class [in Class.php]
+  --class             Generate Class [in Class.php] based on ClassTest [in ClassTest.php]
+  --test              Generate ClassTest [in ClassTest.php] based on Class [in Class.php]
 
-  --help     Print this usage information
-  --version  Print the version
+  --bootstrap <file>  A "bootstrap" PHP file that is run at startup
+
+  --help              Print this usage information
+  --version           Print the version
 
 EOT;
     }
