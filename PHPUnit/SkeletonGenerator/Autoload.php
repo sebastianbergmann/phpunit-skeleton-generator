@@ -43,31 +43,31 @@
  * @since      File available since Release 1.0.0
  */
 
-require 'ezc/Base/base.php';
+require_once 'ezc/Base/base.php';
 spl_autoload_register(array('ezcBase', 'autoload'));
 
 require_once 'Text/Template/Autoload.php';
 
-function phpunit_skeletongenerator_autoload($class) {
-    static $classes = NULL;
-    static $path = NULL;
+spl_autoload_register(
+  function ($class) {
+      static $classes = NULL;
+      static $path = NULL;
 
-    if ($classes === NULL) {
-        $classes = array(
-          'phpunit_skeletongenerator' => '/SkeletonGenerator.php',
-          'phpunit_skeletongenerator_class' => '/SkeletonGenerator/Class.php',
-          'phpunit_skeletongenerator_test' => '/SkeletonGenerator/Test.php',
-          'phpunit_skeletongenerator_textui_command' => '/SkeletonGenerator/TextUI/Command.php'
-        );
+      if ($classes === NULL) {
+          $classes = array(
+            'phpunit_skeletongenerator' => '/SkeletonGenerator.php',
+            'phpunit_skeletongenerator_class' => '/SkeletonGenerator/Class.php',
+            'phpunit_skeletongenerator_test' => '/SkeletonGenerator/Test.php',
+            'phpunit_skeletongenerator_textui_command' => '/SkeletonGenerator/TextUI/Command.php'
+          );
 
-        $path = dirname(dirname(__FILE__));
-    }
+          $path = dirname(dirname(__FILE__));
+      }
 
-    $cn = strtolower($class);
+      $cn = strtolower($class);
 
-    if (isset($classes[$cn])) {
-        require $path . $classes[$cn];
-    }
-}
-
-spl_autoload_register('phpunit_skeletongenerator_autoload');
+      if (isset($classes[$cn])) {
+          require $path . $classes[$cn];
+      }
+  }
+);
