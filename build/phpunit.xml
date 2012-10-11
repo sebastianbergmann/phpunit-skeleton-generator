@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         syntaxCheck="false"
+         strict="true">
+  <testsuites>
+    <testsuite name="phpunit-skeleton-generator">
+      <directory suffix=".phpt">../tests</directory>
+    </testsuite>
+  </testsuites>
+
+  <logging>
+    <log type="coverage-html" target="coverage" title="phpunit-skeleton-generator"
+         charset="UTF-8" yui="true" highlight="true"
+         lowUpperBound="35" highLowerBound="70"/>
+    <log type="coverage-clover" target="logs/clover.xml"/>
+    <log type="junit" target="logs/junit.xml" logIncompleteSkipped="false"/>
+  </logging>
+
+  <filter>
+    <whitelist addUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">../src</directory>
+      <exclude>
+        <file>../src/autoload.php</file>
+      </exclude>
+    </whitelist>
+  </filter>
+</phpunit>

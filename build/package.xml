@@ -17,10 +17,10 @@
   <email>sebastian@phpunit.de</email>
   <active>yes</active>
  </lead>
- <date>2012-02-29</date>
+ <date>2012-MM-DD</date>
  <version>
- <release>1.1.0</release>
-  <api>1.1.0</api>
+ <release>1.2.0</release>
+  <api>1.2.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -30,58 +30,29 @@
  <notes>http://github.com/sebastianbergmann/phpunit-skeleton-generator/blob/master/README.markdown</notes>
  <contents>
   <dir name="/">
-   <dir name="PHPUnit">
-    <dir name="SkeletonGenerator">
-     <dir name="Template">
-      <file baseinstalldir="/" name="Class.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="IncompleteTestMethod.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Method.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="TestClass.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="TestMethod.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="TestMethodStatic.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="TestMethodBool.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="TestMethodBoolStatic.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="TestMethodException.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="TestMethodExceptionStatic.tpl.dist" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
+   <dir name="SebastianBergmann">
+    <dir name="PHPUnit">
+     <dir name="SkeletonGenerator">
+      <dir name="template">
+       <file baseinstalldir="/" name="Class.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="IncompleteTestMethod.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="Method.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="TestClass.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="TestMethod.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="TestMethodStatic.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="TestMethodBool.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="TestMethodBoolStatic.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="TestMethodException.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="TestMethodExceptionStatic.tpl.dist" role="php" />
+      </dir>
+      <file baseinstalldir="/" name="autoload.php" role="php" />
+      <file baseinstalldir="/" name="Command.php" role="php" />
+      <file baseinstalldir="/" name="AbstractGenerator.php" role="php" />
+      <file baseinstalldir="/" name="ClassGenerator.php" role="php" />
+      <file baseinstalldir="/" name="TestGenerator.php" role="php" />
+      <file baseinstalldir="/" name="Version.php" role="php" />
      </dir>
-     <dir name="TextUI">
-      <file baseinstalldir="/" name="Command.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir>
-     <file baseinstalldir="/" name="Autoload.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Class.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Test.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
     </dir>
-    <file baseinstalldir="/" name="SkeletonGenerator.php" role="php">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
    </dir>
    <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
    <file baseinstalldir="/" name="LICENSE" role="doc"/>
@@ -90,19 +61,17 @@
     <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config"/>
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
     <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
-    <tasks:replace from="@package_version@" to="version" type="package-info" />
    </file>
    <file baseinstalldir="/" name="phpunit-skelgen.bat" role="script">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
     <tasks:replace from="@bin_dir@" to="bin_dir" type="pear-config" />
-    <tasks:replace from="@package_version@" to="version" type="package-info" />
    </file>
   </dir>
  </contents>
  <dependencies>
   <required>
    <php>
-    <min>5.2.7</min>
+    <min>5.3.3</min>
    </php>
    <pearinstaller>
     <min>1.9.4</min>

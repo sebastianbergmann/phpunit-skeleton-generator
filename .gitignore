@@ -3,10 +3,12 @@ build/code-browser
 build/coverage
 build/logs
 build/pdepend
-Tests/*.diff
-Tests/*.exp
-Tests/*.log
-Tests/*.out
-Tests/*.php
+build/phar
+build/phpdox
+build/SebastianBergmann
+build/phpunit-skelgen.bat
+build/phpunit-skelgen.php
+build/*.phar
+build/*.tgz
 cache.properties
 phpunit.xml

@@ -34,40 +34,54 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   PHPUnit
- * @package    SkeletonGenerator
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 1.0.0
+ * @package   phpcpd
+ * @author    Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright 2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license   http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @since     File available since Release 1.2.0
  */
 
-require_once 'ezc/Base/base.php';
-spl_autoload_register(array('ezcBase', 'autoload'));
+namespace SebastianBergmann\PHPUnit\SkeletonGenerator
+{
+    /**
+     * @author    Sebastian Bergmann <sebastian@phpunit.de>
+     * @copyright 2009-2012 Sebastian Bergmann <sebastian@phpunit.de>
+     * @license   http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+     * @link      http://www.phpunit.de/
+     * @since     Class available since Release 1.2.0
+     */
+    class Version
+    {
+        const VERSION = '1.2';
+        protected static $version;
 
-require_once 'Text/Template/Autoload.php';
+        /**
+         * @return string
+         */
+        public static function id()
+        {
+            if (self::$version === NULL) {
+                self::$version = self::VERSION;
 
-spl_autoload_register(
-  function ($class) {
-      static $classes = NULL;
-      static $path = NULL;
+                if (is_dir(dirname(__DIR__) . '/.git')) {
+                    $dir = getcwd();
+                    chdir(__DIR__);
+                    $version = exec('git describe --tags');
+                    chdir($dir);
 
-      if ($classes === NULL) {
-          $classes = array(
-            'phpunit_skeletongenerator' => '/SkeletonGenerator.php',
-            'phpunit_skeletongenerator_class' => '/SkeletonGenerator/Class.php',
-            'phpunit_skeletongenerator_test' => '/SkeletonGenerator/Test.php',
-            'phpunit_skeletongenerator_textui_command' => '/SkeletonGenerator/TextUI/Command.php'
-          );
+                    if ($version) {
+                        if (count(explode('.', self::VERSION)) == 3) {
+                            self::$version = $version;
+                        } else {
+                            $version = explode('-', $version);
 
-          $path = dirname(dirname(__FILE__));
-      }
+                            self::$version = self::VERSION . '-' . $version[2];
+                        }
+                    }
+                }
+            }
 
-      $cn = strtolower($class);
-
-      if (isset($classes[$cn])) {
-          require $path . $classes[$cn];
-      }
-  }
-);
+            return self::$version;
+        }
+    }
+}

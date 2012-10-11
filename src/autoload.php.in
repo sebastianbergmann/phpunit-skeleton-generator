@@ -1,6 +1,6 @@
-#!/usr/bin/env php
 <?php
-/* PHPUnit_SkeletonGenerator
+/**
+ * PHPUnit_SkeletonGenerator
  *
  * Copyright (c) 2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
@@ -33,13 +33,32 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @category   PHPUnit
+ * @package    SkeletonGenerator
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 1.0.0
  */
 
-if (strpos('@php_bin@', '@php_bin') === 0) {
-    require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoload.php';
-} else {
-    require 'SebastianBergmann/PHPUnit/SkeletonGenerator/autoload.php';
-}
+require_once 'ezc/Base/base.php';
+spl_autoload_register(array('ezcBase', 'autoload'));
 
-$textui = new SebastianBergmann\PHPUnit\SkeletonGenerator\Command;
-$textui->main();
+require_once 'Text/Template/Autoload.php';
+
+spl_autoload_register(
+    function($class) {
+        static $classes = null;
+        if ($classes === null) {
+            $classes = array(
+              ___CLASSLIST___
+            );
+        }
+        $cn = strtolower($class);
+        if (isset($classes[$cn])) {
+            require ___BASEDIR___$classes[$cn];
+        }
+    }
+);

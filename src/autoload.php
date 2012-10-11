@@ -49,22 +49,20 @@ spl_autoload_register(array('ezcBase', 'autoload'));
 require_once 'Text/Template/Autoload.php';
 
 spl_autoload_register(
-  function ($class) {
-      static $classes = NULL;
-      static $path = NULL;
-
-      if ($classes === NULL) {
-          $classes = array(
-            ___CLASSLIST___
-          );
-
-          $path = dirname(dirname(__FILE__));
-      }
-
-      $cn = strtolower($class);
-
-      if (isset($classes[$cn])) {
-          require $path . $classes[$cn];
-      }
-  }
+    function($class) {
+        static $classes = null;
+        if ($classes === null) {
+            $classes = array(
+              'sebastianbergmann\\phpunit\\skeletongenerator\\abstractgenerator' => '/AbstractGenerator.php',
+              'sebastianbergmann\\phpunit\\skeletongenerator\\classgenerator' => '/ClassGenerator.php',
+              'sebastianbergmann\\phpunit\\skeletongenerator\\command' => '/Command.php',
+              'sebastianbergmann\\phpunit\\skeletongenerator\\testgenerator' => '/TestGenerator.php',
+              'sebastianbergmann\\phpunit\\skeletongenerator\\version' => '/Version.php'
+            );
+        }
+        $cn = strtolower($class);
+        if (isset($classes[$cn])) {
+            require __DIR__ . $classes[$cn];
+        }
+    }
 );
