@@ -70,7 +70,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
          * @param string $inSourceFile
          * @param string $outClassName
          * @param string $outSourceFile
-         * @throws RuntimeException
+         * @throws \RuntimeException
          */
         public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
         {
@@ -112,7 +112,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                 }
 
                 if (!is_file($inSourceFile)) {
-                    throw new RuntimeException(
+                    throw new \RuntimeException(
                       sprintf(
                         '"%s" could not be opened.',
 
@@ -220,7 +220,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                                     break;
 
                                     default: {
-                                        throw new RuntimeException(
+                                        throw new \RuntimeException(
                                           sprintf(
                                             'Token "%s" could not be parsed in @assert annotation.',
                                             $matches[2]

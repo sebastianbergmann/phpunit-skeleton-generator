@@ -65,7 +65,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
          * @param string $inSourceFile
          * @param string $outClassName
          * @param string $outSourceFile
-         * @throws RuntimeException
+         * @throws \RuntimeException
          */
         public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
         {
