@@ -45,7 +45,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
 {
     /**
      * @author    Sebastian Bergmann <sebastian@phpunit.de>
-     * @copyright 2009-2012 Sebastian Bergmann <sebastian@phpunit.de>
+     * @copyright 2009-2013 Sebastian Bergmann <sebastian@phpunit.de>
      * @license   http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
      * @link      http://www.phpunit.de/
      * @since     Class available since Release 1.2.0
