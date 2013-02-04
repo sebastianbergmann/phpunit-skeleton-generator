@@ -171,7 +171,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
 
                     if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
                         foreach ($annotations[1] as $annotation) {
-                            if (preg_match('/\((.*)\)\s+([^\s]*)\s+(.*)(?:#\s*(.*))/', $annotation, $matches) ||
+                            if (preg_match('/\((.*)\)\s+([^\s]*)\s+(.*)(?:#\s*([\w ]+))$/', $annotation, $matches) ||
                                 preg_match('/\((.*)\)\s+([^\s]*)\s+(.*)/', $annotation, $matches) ) {
                                 switch ($matches[2]) {
                                     case '==': {
@@ -302,7 +302,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                                     'origMethodName' => $origMethodName,
                                     'className'      => $this->inClassName['fullyQualifiedClassName'],
                                     'methodName'     => $methodName,
-                                    'description'    => isset($matches[4]) ? addcslashes($matches[4], "'") : '',
+                                    'description'    => isset($matches[4]) ? $matches[4] : '',
                                   )
                                 );
 
