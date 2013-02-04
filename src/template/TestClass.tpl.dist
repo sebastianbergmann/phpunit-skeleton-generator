@@ -8,6 +8,7 @@ class {testClassName} extends {namespaceSeparator}PHPUnit_Framework_TestCase
      * @var {className}
      */
     protected $object;
+    protected $reflects;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
