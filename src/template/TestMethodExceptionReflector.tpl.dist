@@ -1,0 +1,16 @@
+
+    /**
+     * Generated from @assert {annotation}.
+     *
+     * @covers {className}::{origMethodName}
+     * @expectedException {expected}
+     */
+    public function test{methodName}()
+    {
+         if (!isset($this->reflects['{origMethodName}'])) {
+            $this->reflects['{origMethodName}'] = new \ReflectionMethod('{className}', '{origMethodName}');
+            $this->reflects['{origMethodName}']->setAccessible(TRUE);
+        }
+
+        $this->reflects['{origMethodName}']->invoke($this->object, {arguments});
+    }

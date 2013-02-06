@@ -8,6 +8,7 @@
     {
         $this->assert{assertion}(
           {expected},
-          {className}::{origMethodName}({arguments})
+          {className}::{origMethodName}({arguments}),
+          '{description}'
         );
     }

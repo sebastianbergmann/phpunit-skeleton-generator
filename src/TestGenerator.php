@@ -166,13 +166,13 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
             foreach ($class->getMethods() as $method) {
                 if (!$method->isConstructor() &&
                     !$method->isAbstract() &&
-                     $method->isPublic() &&
                      $method->getDeclaringClass()->getName() == $this->inClassName['fullyQualifiedClassName']) {
                     $assertAnnotationFound = FALSE;
 
                     if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
                         foreach ($annotations[1] as $annotation) {
-                            if (preg_match('/\((.*)\)\s+([^\s]*)\s+(.*)/', $annotation, $matches)) {
+                            if (preg_match('/\((.*)\)\s+([^\s]*)\s+(.*)(?:#\s*([\w ]+))$/', $annotation, $matches) ||
+                                preg_match('/\((.*)\)\s+([^\s]*)\s+(.*)/', $annotation, $matches) ) {
                                 switch ($matches[2]) {
                                     case '==': {
                                         $assertion = 'Equals';
@@ -265,6 +265,10 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                                     $template .= 'Static';
                                 }
 
+                                if (!$method->isPublic()) {
+                                    $template .= 'Reflector';
+                                }
+
                                 $methodTemplate = new \Text_Template(
                                   sprintf(
                                     '%s%stemplate%s%s.tpl',
@@ -297,7 +301,8 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                                     'expected'       => $matches[3],
                                     'origMethodName' => $origMethodName,
                                     'className'      => $this->inClassName['fullyQualifiedClassName'],
-                                    'methodName'     => $methodName
+                                    'methodName'     => $methodName,
+                                    'description'    => isset($matches[4]) ? $matches[4] : '',
                                   )
                                 );
 
@@ -308,7 +313,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                         }
                     }
 
-                    if (!$assertAnnotationFound) {
+                    if (!$assertAnnotationFound && $method->isPublic()) {
                         $methodTemplate = new \Text_Template(
                           sprintf(
                             '%s%stemplate%sIncompleteTestMethod.tpl',
