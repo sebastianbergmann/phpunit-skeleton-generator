@@ -1,0 +1,33 @@
+{
+    "name": "phpunit/phpunit-skeleton-generator",
+    "description": "Generate Skeleton Test Classes, for PHPUnit.",
+    "type": "library",
+    "keywords": [
+        "phpunit",
+        "xunit",
+        "testing",
+        "skeleton"
+    ],
+    "homepage": "http://www.phpunit.de/",
+    "authors": [
+        {
+            "name": "Sebastian Bergmann",
+            "email": "sebastian@phpunit.de",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/sebastianbergmann/phpunit-skeleton-generator/issues",
+        "irc": "irc://irc.freenode.net/phpunit"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.7",
+        "phpunit/phpunit": "3.7.x",
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}
