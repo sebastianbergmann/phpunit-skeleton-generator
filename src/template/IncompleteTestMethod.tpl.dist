@@ -1,7 +1,10 @@
-
-    /**
+    /** test{methodName}
+     *
      * @covers {className}::{origMethodName}
+     *
      * @todo   Implement test{methodName}().
+     *
+     * @return void
      */
     public function test{methodName}()
     {
