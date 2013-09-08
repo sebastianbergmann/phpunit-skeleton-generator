@@ -1,9 +1,11 @@
-
-    /**
+    /** {methodName}
+     *
      * @todo Implement {methodName}().
+     *
+     * @throws RuntimeException     	
      */
     public function {methodName}()
     {
         // Remove the following line when you implement this method.
-        throw new RuntimeException('Not yet implemented.');
+        throw new RuntimeException('Not yet implemented.');        
     }

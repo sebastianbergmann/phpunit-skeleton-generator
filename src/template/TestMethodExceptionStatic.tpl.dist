@@ -1,9 +1,11 @@
-
-    /**
+    /** test{methodName}
+     *
      * Generated from @assert {annotation}.
      *
      * @covers {className}::{origMethodName}
      * @expectedException {expected}
+     *
+     * @return void
      */
     public function test{methodName}()
     {
