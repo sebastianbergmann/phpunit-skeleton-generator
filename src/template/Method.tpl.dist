@@ -1,6 +1,8 @@
-
-    /**
+    /** {methodName}
+     *
      * @todo Implement {methodName}().
+     *
+     * @return bool     	
      */
     public function {methodName}()
     {
