@@ -2,16 +2,10 @@
      *
      * @todo Implement {methodName}().
      *
-     * @return bool     	
+     * @throws RuntimeException     	
      */
     public function {methodName}()
     {
-        try {
-            // Remove the following line when you implement this method.
-            throw new RuntimeException('Not yet implemented.');        
-        } catch ( RuntimeException $re ) {
-            echo $re;
-            return false;
-        }
-        return true;
+        // Remove the following line when you implement this method.
+        throw new RuntimeException('Not yet implemented.');        
     }
