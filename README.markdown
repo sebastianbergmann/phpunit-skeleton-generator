@@ -17,7 +17,7 @@ The following two commands (which you may have to run as `root`) are all that is
 
 ### PHP Archive (PHAR)
 
-    wget http://pear.phpunit.de/get/phpunit-skelgen.phar
+    wget https://phar.phpunit.de/phpunit-skelgen.phar
     chmod +x phpunit-skelgen.phar
 
 ## Documentation
