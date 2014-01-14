@@ -1,0 +1,27 @@
+{
+  "name": "phpunit/phpunit-skeleton-generator",
+  "description": "Tool that can generate skeleton test classes from production code classes and vice versa",
+  "type": "library",
+  "keywords": ["phpunit", "xunit", "testing", "skeleton"],
+  "homepage": "http://www.phpunit.de/",
+  "authors": [{
+    "name": "Sebastian Bergmann",
+    "email": "sebastian@phpunit.de",
+    "role": "lead"
+  }],
+  "support": {
+    "issues": "https://github.com/sebastianbergmann/phpunit-skeleton-generator/issues",
+    "irc": "irc://irc.freenode.net/phpunit"
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.4.7",
+    "phpunit/phpunit": "3.7.*",
+    "phpunit/php-text-template": "1.1.4",
+    "zetacomponents/console-tools": "1.6",
+    "zetacomponents/base": "1.8"
+  },
+  "autoload": {
+    "classmap": ["src/"]
+  }
+}
