@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHPUnit_SkeletonGenerator
  *
@@ -43,8 +44,8 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace SebastianBergmann\PHPUnit\SkeletonGenerator
-{
+namespace SebastianBergmann\PHPUnit\SkeletonGenerator {
+
     /**
      * Generator for test class skeletons from classes.
      *
@@ -58,6 +59,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
      */
     class TestGenerator extends AbstractGenerator
     {
+
         /**
          * @var array
          */
@@ -75,7 +77,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
         public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
         {
             if (class_exists($inClassName)) {
-                $reflector    = new \ReflectionClass($inClassName);
+                $reflector = new \ReflectionClass($inClassName);
                 $inSourceFile = $reflector->getFileName();
 
                 if ($inSourceFile === FALSE) {
@@ -86,12 +88,10 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
             } else {
                 if (empty($inSourceFile)) {
                     $possibleFilenames = array(
-                      $inClassName . '.php',
-                      str_replace(
-                        array('_', '\\'),
-                        DIRECTORY_SEPARATOR,
-                        $inClassName
-                      ) . '.php'
+                        $inClassName . '.php',
+                        str_replace(
+                                array('_', '\\'), DIRECTORY_SEPARATOR, $inClassName
+                        ) . '.php'
                     );
 
                     foreach ($possibleFilenames as $possibleFilename) {
@@ -103,21 +103,17 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
 
                 if (empty($inSourceFile)) {
                     throw new \RuntimeException(
-                      sprintf(
-                        'Neither "%s" nor "%s" could be opened.',
-                        $possibleFilenames[0],
-                        $possibleFilenames[1]
-                      )
+                    sprintf(
+                            'Neither "%s" nor "%s" could be opened.', $possibleFilenames[0], $possibleFilenames[1]
+                    )
                     );
                 }
 
                 if (!is_file($inSourceFile)) {
                     throw new \RuntimeException(
-                      sprintf(
-                        '"%s" could not be opened.',
-
-                        $inSourceFile
-                      )
+                    sprintf(
+                            '"%s" could not be opened.', $inSourceFile
+                    )
                     );
                 }
 
@@ -126,12 +122,9 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
 
                 if (!class_exists($inClassName)) {
                     throw new \RuntimeException(
-                      sprintf(
-                        'Could not find class "%s" in "%s".',
-
-                        $inClassName,
-                        $inSourceFile
-                      )
+                    sprintf(
+                            'Could not find class "%s" in "%s".', $inClassName, $inSourceFile
+                    )
                     );
                 }
             }
@@ -145,7 +138,7 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
             }
 
             parent::__construct(
-              $inClassName, $inSourceFile, $outClassName, $outSourceFile
+                    $inClassName, $inSourceFile, $outClassName, $outSourceFile
             );
         }
 
@@ -157,17 +150,17 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
          */
         public function generate($verbose = FALSE)
         {
-            $class             = new \ReflectionClass(
-                                   $this->inClassName['fullyQualifiedClassName']
-                                 );
-            $methods           = '';
+            $class = new \ReflectionClass(
+                    $this->inClassName['fullyQualifiedClassName']
+            );
+            $methods = '';
             $incompleteMethods = '';
 
             foreach ($class->getMethods() as $method) {
                 if (!$method->isConstructor() &&
-                    !$method->isAbstract() &&
-                     $method->isPublic() &&
-                     $method->getDeclaringClass()->getName() == $this->inClassName['fullyQualifiedClassName']) {
+                        !$method->isAbstract() &&
+                        $method->isPublic() &&
+                        $method->getDeclaringClass()->getName() == $this->inClassName['fullyQualifiedClassName']) {
                     $assertAnnotationFound = FALSE;
 
                     if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
@@ -175,89 +168,81 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                             if (preg_match('/\((.*)\)\s+([^\s]*)\s+(.*)/', $annotation, $matches)) {
                                 switch ($matches[2]) {
                                     case '==': {
-                                        $assertion = 'Equals';
-                                    }
-                                    break;
+                                            $assertion = 'Equals';
+                                        }
+                                        break;
 
                                     case '!=': {
-                                        $assertion = 'NotEquals';
-                                    }
-                                    break;
+                                            $assertion = 'NotEquals';
+                                        }
+                                        break;
 
                                     case '===': {
-                                        $assertion = 'Same';
-                                    }
-                                    break;
+                                            $assertion = 'Same';
+                                        }
+                                        break;
 
                                     case '!==': {
-                                        $assertion = 'NotSame';
-                                    }
-                                    break;
+                                            $assertion = 'NotSame';
+                                        }
+                                        break;
 
                                     case '>': {
-                                        $assertion = 'GreaterThan';
-                                    }
-                                    break;
+                                            $assertion = 'GreaterThan';
+                                        }
+                                        break;
 
                                     case '>=': {
-                                        $assertion = 'GreaterThanOrEqual';
-                                    }
-                                    break;
+                                            $assertion = 'GreaterThanOrEqual';
+                                        }
+                                        break;
 
                                     case '<': {
-                                        $assertion = 'LessThan';
-                                    }
-                                    break;
+                                            $assertion = 'LessThan';
+                                        }
+                                        break;
 
                                     case '<=': {
-                                        $assertion = 'LessThanOrEqual';
-                                    }
-                                    break;
+                                            $assertion = 'LessThanOrEqual';
+                                        }
+                                        break;
 
                                     case 'throws': {
-                                        $assertion = 'exception';
-                                    }
-                                    break;
-
+                                            $assertion = 'exception';
+                                        }
+                                        break;
+                                    case 'instanceof': {
+                                            $assertion = 'instance';
+                                        }
+                                        break;
                                     default: {
-                                        throw new \RuntimeException(
-                                          sprintf(
-                                            'Token "%s" could not be parsed in @assert annotation.',
-                                            $matches[2]
-                                          )
-                                        );
-                                    }
+                                            throw new \RuntimeException(
+                                            sprintf('Token "%s" could not be parsed in @assert annotation.', $matches[2])
+                                            );
+                                        }
                                 }
 
                                 if ($assertion == 'exception') {
                                     $template = 'TestMethodException';
-                                }
-
-                                else if ($assertion == 'Equals' &&
-                                         strtolower($matches[3]) == 'true') {
+                                } else if ($assertion == 'Equals' &&
+                                        strtolower($matches[3]) == 'true') {
                                     $assertion = 'True';
-                                    $template  = 'TestMethodBool';
-                                }
-
-                                else if ($assertion == 'NotEquals' &&
-                                         strtolower($matches[3]) == 'true') {
+                                    $template = 'TestMethodBool';
+                                } else if ($assertion == 'NotEquals' &&
+                                        strtolower($matches[3]) == 'true') {
                                     $assertion = 'False';
-                                    $template  = 'TestMethodBool';
-                                }
-
-                                else if ($assertion == 'Equals' &&
-                                         strtolower($matches[3]) == 'false') {
+                                    $template = 'TestMethodBool';
+                                } else if ($assertion == 'Equals' &&
+                                        strtolower($matches[3]) == 'false') {
                                     $assertion = 'False';
-                                    $template  = 'TestMethodBool';
-                                }
-
-                                else if ($assertion == 'NotEquals' &&
-                                         strtolower($matches[3]) == 'false') {
+                                    $template = 'TestMethodBool';
+                                } else if ($assertion == 'NotEquals' &&
+                                        strtolower($matches[3]) == 'false') {
                                     $assertion = 'True';
-                                    $template  = 'TestMethodBool';
-                                }
-
-                                else {
+                                    $template = 'TestMethodBool';
+                                } else if ($assertion == 'instance') {
+                                    $template = 'TestMethodInstance';
+                                } else {
                                     $template = 'TestMethod';
                                 }
 
@@ -266,21 +251,14 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                                 }
 
                                 $methodTemplate = new \Text_Template(
-                                  sprintf(
-                                    '%s%stemplate%s%s.tpl',
-
-                                    __DIR__,
-                                    DIRECTORY_SEPARATOR,
-                                    DIRECTORY_SEPARATOR,
-                                    $template
-                                  )
+                                        sprintf('%s%stemplate%s%s.tpl', __DIR__, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $template)
                                 );
 
                                 $origMethodName = $method->getName();
-                                $methodName     = ucfirst($origMethodName);
+                                $methodName = ucfirst($origMethodName);
 
                                 if (isset($this->methodNameCounter[$methodName])) {
-                                    $this->methodNameCounter[$methodName]++;
+                                    $this->methodNameCounter[$methodName] ++;
                                 } else {
                                     $this->methodNameCounter[$methodName] = 1;
                                 }
@@ -290,15 +268,15 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                                 }
 
                                 $methodTemplate->setVar(
-                                  array(
-                                    'annotation'     => trim($annotation),
-                                    'arguments'      => $matches[1],
-                                    'assertion'      => isset($assertion) ? $assertion : '',
-                                    'expected'       => $matches[3],
-                                    'origMethodName' => $origMethodName,
-                                    'className'      => $this->inClassName['fullyQualifiedClassName'],
-                                    'methodName'     => $methodName
-                                  )
+                                        array(
+                                            'annotation' => trim($annotation),
+                                            'arguments' => $matches[1],
+                                            'assertion' => isset($assertion) ? $assertion : '',
+                                            'expected' => $matches[3],
+                                            'origMethodName' => $origMethodName,
+                                            'className' => $this->inClassName['fullyQualifiedClassName'],
+                                            'methodName' => $methodName
+                                        )
                                 );
 
                                 $methods .= $methodTemplate->render();
@@ -310,21 +288,15 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
 
                     if (!$assertAnnotationFound) {
                         $methodTemplate = new \Text_Template(
-                          sprintf(
-                            '%s%stemplate%sIncompleteTestMethod.tpl',
-
-                            __DIR__,
-                            DIRECTORY_SEPARATOR,
-                            DIRECTORY_SEPARATOR
-                          )
+                                sprintf('%s%stemplate%sIncompleteTestMethod.tpl', __DIR__, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR)
                         );
 
                         $methodTemplate->setVar(
-                          array(
-                            'className'      => $this->inClassName['fullyQualifiedClassName'],
-                            'methodName'     => ucfirst($method->getName()),
-                            'origMethodName' => $method->getName()
-                          )
+                                array(
+                                    'className' => $this->inClassName['fullyQualifiedClassName'],
+                                    'methodName' => ucfirst($method->getName()),
+                                    'origMethodName' => $method->getName()
+                                )
                         );
 
                         $incompleteMethods .= $methodTemplate->render();
@@ -333,43 +305,39 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
             }
 
             $classTemplate = new \Text_Template(
-              sprintf(
-                '%s%stemplate%sTestClass.tpl',
-
-                __DIR__,
-                DIRECTORY_SEPARATOR,
-                DIRECTORY_SEPARATOR
-              )
+                    sprintf('%s%stemplate%sTestClass.tpl', __DIR__, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR)
             );
 
             if ($this->outClassName['namespace'] != '') {
                 $namespace = "\nnamespace " .
-                             $this->outClassName['namespace'] . ";\n";
+                        $this->outClassName['namespace'] . ";\n";
             } else {
                 $namespace = '';
             }
 
             $classTemplate->setVar(
-              array(
-                'namespace'          => $namespace,
-                'namespaceSeparator' => !empty($namespace) ? '\\' : '',
-                'className'          => $this->inClassName['className'],
-                'testClassName'      => $this->outClassName['className'],
-                'methods'            => $methods . $incompleteMethods,
-                'date'               => date('Y-m-d'),
-                'time'               => date('H:i:s'),
-                'version'            => Version::id()
-              )
+                    array(
+                        'namespace' => $namespace,
+                        'namespaceSeparator' => !empty($namespace) ? '\\' : '',
+                        'className' => $this->inClassName['className'],
+                        'testClassName' => $this->outClassName['className'],
+                        'methods' => $methods . $incompleteMethods,
+                        'date' => date('Y-m-d'),
+                        'time' => date('H:i:s'),
+                        'version' => Version::id()
+                    )
             );
 
             if (!$verbose) {
                 return $classTemplate->render();
             } else {
                 return array(
-                  'code'       => $classTemplate->render(),
-                  'incomplete' => empty($methods)
+                    'code' => $classTemplate->render(),
+                    'incomplete' => empty($methods)
                 );
             }
         }
+
     }
+
 }
