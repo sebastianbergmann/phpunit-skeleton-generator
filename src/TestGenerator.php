@@ -214,6 +214,11 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                                     }
                                     break;
 
+                                    case 'instanceof': {
+                                        $assertion = 'instance';
+                                    }
+                                    break;
+
                                     case 'throws': {
                                         $assertion = 'exception';
                                     }
@@ -255,6 +260,10 @@ namespace SebastianBergmann\PHPUnit\SkeletonGenerator
                                          strtolower($matches[3]) == 'false') {
                                     $assertion = 'True';
                                     $template  = 'TestMethodBool';
+                                }
+
+                                else if ($assertion == 'instance') {
+                                    $template = 'TestMethodInstance';
                                 }
 
                                 else {
