@@ -15,7 +15,7 @@
   },
   "minimum-stability": "dev",
   "require": {
-    "php": ">=5.4.7",
+    "php": ">=5.3.3",
     "phpunit/phpunit": "3.7.*",
     "phpunit/php-text-template": "1.1.4",
     "zetacomponents/console-tools": "1.6",
