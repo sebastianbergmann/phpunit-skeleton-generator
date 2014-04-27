@@ -132,10 +132,7 @@ abstract class AbstractGenerator
             $file = $this->outSourceFile;
         }
 
-        if ($fp = fopen($file, 'wt')) {
-            fwrite($fp, $this->generate());
-            fclose($fp);
-        }
+        file_put_contents($file, $this->generate());
     }
 
     /**
