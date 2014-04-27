@@ -43,7 +43,6 @@
 namespace SebastianBergmann\PHPUnit\SkeletonGenerator\CLI;
 
 use SebastianBergmann\PHPUnit\SkeletonGenerator\AbstractGenerator;
-use SebastianBergmann\PHPUnit\SkeletonGenerator\TestGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -57,50 +56,50 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link      http://github.com/sebastianbergmann/phpunit-skeleton-generator/tree
  * @since     Class available since Release 2.0.0
  */
-class GenerateTestCommand extends BaseCommand
+abstract class BaseCommand extends Command
 {
     /**
      * Configures the current command.
      */
     protected function configure()
     {
-        $this->setName('generate-test')
-             ->setDescription('Generate a test class based on a class')
-             ->addArgument(
-                 'class',
-                 InputArgument::REQUIRED,
-                 'The name of the class to generate a test class for'
-             )
-             ->addArgument(
-                 'class-source',
-                 InputArgument::OPTIONAL,
-                 'The source file that declared the class to generate a test class for'
-             )
-             ->addArgument(
-                 'test-class',
-                 InputArgument::OPTIONAL,
-                 'The name of the test class that is to be generated'
-             )
-             ->addArgument(
-                 'test-source',
-                 InputArgument::OPTIONAL,
-                 'The file to which the generated test code is to be written'
-             );
+        $this->addOption(
+            'bootstrap',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'A "bootstrap" PHP file that is run at startup'
+        );
+    }
 
-        parent::configure();
+    /**
+     * Executes the current command.
+     *
+     * @param InputInterface  $input  An InputInterface instance
+     * @param OutputInterface $output An OutputInterface instance
+     *
+     * @return null|integer null or 0 if everything went fine, or an error code
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        if ($input->getOption('bootstrap') && file_exists($input->getOption('bootstrap'))) {
+            include $input->getOption('bootstrap');
+        }
+
+        $generator = $this->getGenerator($input);
+        $generator->write();
+
+        $output->writeln(
+            sprintf(
+                'Wrote skeleton for "%s" to "%s".',
+                $generator->getOutClassName(),
+                $generator->getOutSourceFile()
+            )
+        );
     }
 
     /**
      * @param InputInterface  $input  An InputInterface instance
      * @return AbstractGenerator
      */
-    protected function getGenerator(InputInterface $input)
-    {
-        return new TestGenerator(
-            (string)$input->getArgument('class'),
-            (string)$input->getArgument('class-source'),
-            (string)$input->getArgument('test-class'),
-            (string)$input->getArgument('test-source')
-        );
-    }
+    abstract protected function getGenerator(InputInterface $input);
 }

@@ -42,6 +42,7 @@
 
 namespace SebastianBergmann\PHPUnit\SkeletonGenerator\CLI;
 
+use SebastianBergmann\PHPUnit\SkeletonGenerator\AbstractGenerator;
 use SebastianBergmann\PHPUnit\SkeletonGenerator\ClassGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -56,7 +57,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link      http://github.com/sebastianbergmann/phpunit-skeleton-generator/tree
  * @since     Class available since Release 2.0.0
  */
-class GenerateClassCommand extends Command
+class GenerateClassCommand extends BaseCommand
 {
     /**
      * Configures the current command.
@@ -84,44 +85,22 @@ class GenerateClassCommand extends Command
                  'class-source',
                  InputArgument::OPTIONAL,
                  'The file to which the generated code is to be written'
-             )
-             ->addOption(
-                 'bootstrap',
-                 null,
-                 InputOption::VALUE_REQUIRED,
-                 'A "bootstrap" PHP file that is run at startup'
              );
+
+        parent::configure();
     }
 
     /**
-     * Executes the current command.
-     *
      * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return null|integer null or 0 if everything went fine, or an error code
+     * @return AbstractGenerator
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function getGenerator(InputInterface $input)
     {
-        if ($input->getOption('bootstrap') && file_exists($input->getOption('bootstrap'))) {
-            include $input->getOption('bootstrap');
-        }
-
-        $generator = new ClassGenerator(
+        return new ClassGenerator(
             (string)$input->getArgument('test-class'),
             (string)$input->getArgument('test-source'),
             (string)$input->getArgument('class'),
             (string)$input->getArgument('class-source')
-        );
-
-        $generator->write();
-
-        $output->writeln(
-            sprintf(
-                'Wrote skeleton for "%s" to "%s".',
-                $generator->getOutClassName(),
-                $generator->getOutSourceFile()
-            )
         );
     }
 }
