@@ -42,6 +42,11 @@
     <include name="**/*.php" />
     <modified />
    </fileset>
+
+   <fileset dir="${basedir}/tests">
+    <include name="**/*.php" />
+    <modified />
+   </fileset>
   </apply>
  </target>
 
@@ -50,6 +55,13 @@
    <arg value="--standard=PSR2" />
    <arg value="--extensions=php" />
    <arg path="${basedir}/src" />
+  </exec>
+ </target>
+
+ <target name="phpunit" depends="prepare,lint" description="Run unit tests with PHPUnit">
+  <exec executable="${basedir}/vendor/bin/phpunit" failonerror="true">
+   <arg value="--configuration" />
+   <arg path="${basedir}/build/phpunit.xml" />
   </exec>
  </target>
 
