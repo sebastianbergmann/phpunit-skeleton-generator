@@ -7,7 +7,7 @@
     public function test{methodName}()
     {
         $this->assert{assertion}(
-          {expected},
-          $this->object->{origMethodName}({arguments})
+            {expected},
+            $this->object->{origMethodName}({arguments})
         );
     }
