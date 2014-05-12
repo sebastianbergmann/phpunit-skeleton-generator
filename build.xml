@@ -84,7 +84,7 @@
   </copy>
 
   <copy todir="${basedir}/build/phar/phpunit">
-   <fileset dir="${basedir}/vendor/sebastian">
+   <fileset dir="${basedir}/vendor/phpunit">
     <include name="**/src/*.php" />
     <exclude name="**/autoload.php" />
    </fileset>
