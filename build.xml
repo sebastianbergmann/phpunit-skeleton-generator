@@ -83,16 +83,16 @@
    </fileset>
   </copy>
 
-  <copy todir="${basedir}/build/phar/phpunit">
-   <fileset dir="${basedir}/vendor/phpunit">
-    <include name="**/src/*.php" />
-    <exclude name="**/autoload.php" />
+  <copy todir="${basedir}/build/phar/php-text-template">
+   <fileset dir="${basedir}/vendor/phpunit/php-text-template/Text">
+    <include name="**/*.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
-  <copy todir="${basedir}/build/phar/sebastian">
-   <fileset dir="${basedir}/vendor/sebastian">
-    <include name="**/src/*.php" />
+  <copy todir="${basedir}/build/phar/sebastian-version">
+   <fileset dir="${basedir}/vendor/sebastian/version/src">
+    <include name="**/*.php" />
     <exclude name="**/autoload.php" />
    </fileset>
   </copy>
