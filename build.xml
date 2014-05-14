@@ -80,6 +80,7 @@
   <copy todir="${basedir}/build/phar/src">
    <fileset dir="${basedir}/src">
     <include name="**/*.php" />
+    <include name="**/*.tpl.dist" />
    </fileset>
   </copy>
 
