@@ -81,20 +81,33 @@ abstract class BaseCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('bootstrap') && file_exists($input->getOption('bootstrap'))) {
+        if($input->getOption('bootstrap') && file_exists($input->getOption('bootstrap')))
+        {
             include $input->getOption('bootstrap');
         }
 
         $generator = $this->getGenerator($input);
-        $generator->write();
+        if(is_array($generator))
+        {
+            $generators = $generator;
+        }
+        else
+        {
+            $generators = [$generator];
+        }
 
-        $output->writeln(
-            sprintf(
-                'Wrote skeleton for "%s" to "%s".',
-                $generator->getOutClassName(),
-                $generator->getOutSourceFile()
-            )
-        );
+        foreach($generators as $generator)
+        {
+            $generator->write();
+
+            $output->writeln(
+                sprintf(
+                    'Wrote skeleton for "%s" to "%s".',
+                    $generator->getOutClassName(),
+                    $generator->getOutSourceFile()
+                )
+            );
+        }
     }
 
     /**
