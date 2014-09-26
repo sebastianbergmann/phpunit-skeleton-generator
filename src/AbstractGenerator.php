@@ -121,6 +121,15 @@ abstract class AbstractGenerator
         return $this->outSourceFile;
     }
 
+
+    /**
+     * @return string
+     */
+    public function getInSourceFile()
+    {
+        return $this->inSourceFile;
+    }
+
     /**
      * Generates the code and writes it to a source file.
      *
