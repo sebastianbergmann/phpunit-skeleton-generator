@@ -79,7 +79,7 @@ class GenerateTestsCommand extends BaseCommand
                 'Name of the test class e.g {classname}Test'
             );
 
-        $this->setHelp('Usage: generate-tests src tests {classname}TestSkeleton');
+        $this->setHelp('Usage: generate-tests src tests {classname}SkeletonTest');
 
         parent::configure();
     }
