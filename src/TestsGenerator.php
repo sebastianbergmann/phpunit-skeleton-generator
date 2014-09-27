@@ -72,11 +72,21 @@ class TestsGenerator
 
         foreach($map as $className => $filename)
         {
+            // skip non classes (traits, interfaces) but still include the file to prevent errors 
+            include_once $filename;
+
+            if(!class_exists($className))
+            {
+                continue;
+            }
+
+            // extract class name without namespace
             $tmp            = explode('\\', $className);
             $shortClassName = $tmp[count($tmp) - 1];
 
+            // build generator
             $outTestClassName = str_ireplace('{classname}', $shortClassName, $outClassName);
-            $ret[] = new TestGenerator($className, $filename, $outTestClassName, $outFolder . '/' . $outTestClassName . '.php');
+            $ret[]            = new TestGenerator($className, $filename, $outTestClassName, $outFolder . '/' . $outTestClassName . '.php');
         }
 
         return $ret;

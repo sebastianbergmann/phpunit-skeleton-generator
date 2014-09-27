@@ -13,78 +13,73 @@
 
 namespace SebastianBergmann\PHPUnit\SkeletonGenerator\Utils;
 
-use Symfony\Component\Finder\Finder;
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+if (!defined('T_TRAIT')) {
+    define('T_TRAIT', 0);
+}
 
 /**
  * ClassMapGenerator
  *
  * @author Gyula Sallai <salla016@gmail.com>
- * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 class ClassMapGenerator
 {
     /**
+     * Generate a class map file
+     *
+     * @param array|string $dirs Directories or a single path to search in
+     * @param string       $file The name of the class map file
+     */
+    public static function dump($dirs, $file)
+    {
+        $dirs = (array) $dirs;
+        $maps = array();
+
+        foreach ($dirs as $dir) {
+            $maps = array_merge($maps, static::createMap($dir));
+        }
+
+        file_put_contents($file, sprintf('<?php return %s;', var_export($maps, true)));
+    }
+
+    /**
      * Iterate over all files in the given directory searching for classes
      *
-     * @param \Iterator|string $path      The path to search in or an iterator
-     * @param string           $whitelist Regex that matches against the file path
-     * @param string           $namespace Optional namespace prefix to filter by
+     * @param \Iterator|string $dir The directory to search in or an iterator
      *
      * @return array A class map array
-     *
-     * @throws \RuntimeException When the path is neither an existing file nor directory
      */
-    public static function createMap($path, $whitelist = null, $namespace = null)
+    public static function createMap($dir)
     {
-        if(is_string($path))
-        {
-            if(is_file($path))
-            {
-                $path = array(new \SplFileInfo($path));
-            }
-            elseif(is_dir($path))
-            {
-                $path = Finder::create()->files()->followLinks()->name('/\.(php|inc|hh)$/')->in($path);
-            }
-            else
-            {
-                throw new \RuntimeException(
-                    'Could not scan for classes inside "' . $path .
-                    '" which does not appear to be a file nor a folder'
-                );
-            }
+        if (is_string($dir)) {
+            $dir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
         }
 
         $map = array();
 
-        foreach($path as $file)
-        {
-            $filePath = $file->getRealPath();
-
-            if(!in_array(pathinfo($filePath, PATHINFO_EXTENSION), array('php', 'inc', 'hh')))
-            {
+        foreach ($dir as $file) {
+            if (!$file->isFile()) {
                 continue;
             }
 
-            if($whitelist && !preg_match($whitelist, strtr($filePath, '\\', '/')))
-            {
+            $path = $file->getRealPath();
+
+            if (pathinfo($path, PATHINFO_EXTENSION) !== 'php') {
                 continue;
             }
 
-            $classes = self::findClasses($filePath);
+            $classes = self::findClasses($path);
 
-            foreach($classes as $class)
-            {
-                // skip classes not within the given namespace prefix
-                if(null !== $namespace && 0 !== strpos($class, $namespace))
-                {
-                    continue;
-                }
-
-                if(!isset($map[$class]))
-                {
-                    $map[$class] = $filePath;
-                }
+            foreach ($classes as $class) {
+                $map[$class] = $path;
             }
         }
 
@@ -94,91 +89,58 @@ class ClassMapGenerator
     /**
      * Extract the classes in the given file
      *
-     * @param  string $path The file to check
+     * @param string $path The file to check
      *
-     * @throws \RuntimeException
-     * @return array             The found classes
+     * @return array The found classes
      */
     private static function findClasses($path)
     {
-        $traits = '';
+        $contents = file_get_contents($path);
+        $tokens   = token_get_all($contents);
 
-        try
-        {
-            $contents = @php_strip_whitespace($path);
-            if(!$contents)
-            {
-                if(!file_exists($path))
-                {
-                    throw new \Exception('File does not exist');
-                }
-                if(!is_readable($path))
-                {
-                    throw new \Exception('File is not readable');
-                }
-            }
-        }
-        catch(\Exception $e)
-        {
-            throw new \RuntimeException('Could not scan for classes inside ' . $path . ": \n" . $e->getMessage(), 0, $e);
-        }
+        $classes = array();
 
-        // return early if there is no chance of matching anything in this file
-        if(!preg_match('{\b(?:class|interface' . $traits . ')\s}i', $contents))
-        {
-            return array();
-        }
-
-        // strip heredocs/nowdocs
-        $contents = preg_replace('{<<<\s*(\'?)(\w+)\\1(?:\r\n|\n|\r)(?:.*?)(?:\r\n|\n|\r)\\2(?=\r\n|\n|\r|;)}s', 'null', $contents);
-        // strip strings
-        $contents = preg_replace('{"[^"\\\\]*(\\\\.[^"\\\\]*)*"|\'[^\'\\\\]*(\\\\.[^\'\\\\]*)*\'}s', 'null', $contents);
-        // strip leading non-php code if needed
-        if(substr($contents, 0, 2) !== '<?')
-        {
-            $contents = preg_replace('{^.+?<\?}s', '<?', $contents, 1, $replacements);
-            if($replacements === 0)
-            {
-                return array();
-            }
-        }
-        // strip non-php blocks in the file
-        $contents = preg_replace('{\?>.+<\?}s', '?><?', $contents);
-        // strip trailing non-php code if needed
-        $pos = strrpos($contents, '?>');
-        if(false !== $pos && false === strpos(substr($contents, $pos), '<?'))
-        {
-            $contents = substr($contents, 0, $pos);
-        }
-
-        preg_match_all('{
-            (?:
-                 \b(?<![\$:>])(?P<type>class|interface' . $traits . ') \s+ (?P<name>[a-zA-Z_\x7f-\xff:][a-zA-Z0-9_\x7f-\xff:\-]*)
-               | \b(?<![\$:>])(?P<ns>namespace) (?P<nsname>\s+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(?:\s*\\\\\s*[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)*)? \s*[\{;]
-            )
-        }ix', $contents, $matches);
-
-        $classes   = array();
         $namespace = '';
+        for ($i = 0, $max = count($tokens); $i < $max; $i++) {
+            $token = $tokens[$i];
 
-        for($i = 0, $len = count($matches['type']); $i < $len; $i++)
-        {
-            if(!empty($matches['ns'][$i]))
-            {
-                $namespace = str_replace(array(' ', "\t", "\r", "\n"), '', $matches['nsname'][$i]) . '\\';
+            if (is_string($token)) {
+                continue;
             }
-            else
-            {
-                $name = $matches['name'][$i];
-                if($name[0] === ':')
-                {
-                    // This is an XHP class, https://github.com/facebook/xhp
-                    $name = 'xhp' . substr(str_replace(array('-', ':'), array('_', '__'), $name), 1);
-                }
-                $classes[] = ltrim($namespace . $name, '\\');
+
+            $class = '';
+
+            switch ($token[0]) {
+                case T_NAMESPACE:
+                    $namespace = '';
+                    // If there is a namespace, extract it
+                    while (($t = $tokens[++$i]) && is_array($t)) {
+                        if (in_array($t[0], array(T_STRING, T_NS_SEPARATOR))) {
+                            $namespace .= $t[1];
+                        }
+                    }
+                    $namespace .= '\\';
+                    break;
+                case T_CLASS:
+                case T_INTERFACE:
+                case T_TRAIT:
+                    // Find the classname
+                    while (($t = $tokens[++$i]) && is_array($t)) {
+                        if (T_STRING === $t[0]) {
+                            $class .= $t[1];
+                        } elseif ($class !== '' && T_WHITESPACE == $t[0]) {
+                            break;
+                        }
+                    }
+
+                    $classes[] = ltrim($namespace.$class, '\\');
+                    break;
+                default:
+                    break;
             }
         }
 
         return $classes;
     }
 }
+
