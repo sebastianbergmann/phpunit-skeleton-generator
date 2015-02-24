@@ -69,8 +69,16 @@ Class GenerateModuleTestsCommand extends Command
         }
         
         if ($input->getArgument('module-path')) {
-            
-            $this->root = rtrim($input->getArgument('module-path'),'/');
+
+            if (substr($input->getArgument('module-path'), 0, 1) === '/') {
+
+                $this->root = rtrim($input->getArgument('module-path'),'/');
+
+            } else {
+
+                $this->root = getcwd().'/'.rtrim($input->getArgument('module-path'),'/');
+            }
+
             
         } else {
             // Default root path
@@ -124,6 +132,11 @@ Class GenerateModuleTestsCommand extends Command
                     root of a module?";
             return;    
         }
+
+        if (!file_exists($this->root.'/tests')) {
+
+            mkdir($this->root.'/tests');
+        }
         
         // Check for the test directory we will store tests in
         if (!file_exists($this->testCodePath)) {
@@ -150,7 +163,11 @@ Class GenerateModuleTestsCommand extends Command
         //Grab the relative path
         $relativePath = substr($directory, strlen($this->sourceCodePath));
         $namespaceRelativePath = str_replace("/", "\\", $relativePath);
-        
+
+        if (!file_exists($this->testCodePath.$relativePath)) {
+
+            mkdir($this->testCodePath.$relativePath);
+        }
         
         // Grab all of the directory's children
         $children = scandir($directory);
@@ -191,7 +208,7 @@ Class GenerateModuleTestsCommand extends Command
                 if (!file_exists($this->testCodePath.$relativePath.'/'.$filename)) {
                     
                     // Create it
-                    if ($output->isVerbose) {
+                    if ($output->isVerbose()) {
                         
                         echo "Creating $relativePath/$filename in the test code path...";
                     }
