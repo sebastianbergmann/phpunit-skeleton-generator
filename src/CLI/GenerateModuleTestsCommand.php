@@ -145,6 +145,8 @@ Class GenerateModuleTestsCommand extends Command
         }
         
         $this->descendDirectory($this->sourceCodePath, $output);
+
+        echo "Done.\n";
     }
     
     private function descendDirectory($directory, &$output)
@@ -214,28 +216,28 @@ Class GenerateModuleTestsCommand extends Command
                     }
                     
                     file_put_contents($this->testCodePath.$relativePath.'/'.$filename, '');
-                }  
-                    
-                // Let's try generating the test file
-                $input['class'] = $this->moduleName.$namespaceRelativePath."\\".basename($child,'.php');
-                $input['class-source'] = $directory.'/'.$child;
-                $input['test-class'] = $this->moduleName."Test".$namespaceRelativePath."\\".basename($filename,'.php');
-                $input['test-source'] = $this->testCodePath.$relativePath.'/'.$filename;
-                
-                $generator = $this->getGenerator($input);
-                
-                $generator->write();
 
-                if ($output->isVerbose()) {
-                    
-                    $output->writeln(
-                        sprintf(
-                            'Wrote skeleton for "%s" to "%s".',
-                            $generator->getOutClassName(),
-                            $generator->getOutSourceFile()
-                        )
-                    );  
-                } 
+                    // Let's try generating the test file
+                    $input['class'] = $this->moduleName.$namespaceRelativePath."\\".basename($child,'.php');
+                    $input['class-source'] = $directory.'/'.$child;
+                    $input['test-class'] = $this->moduleName."Test".$namespaceRelativePath."\\".basename($filename,'.php');
+                    $input['test-source'] = $this->testCodePath.$relativePath.'/'.$filename;
+
+                    $generator = $this->getGenerator($input);
+
+                    $generator->write();
+
+                    if ($output->isVerbose()) {
+
+                        $output->writeln(
+                            sprintf(
+                                'Wrote skeleton for "%s" to "%s".',
+                                $generator->getOutClassName(),
+                                $generator->getOutSourceFile()
+                            )
+                        );
+                    }
+                }
             }  
         }   
     }
