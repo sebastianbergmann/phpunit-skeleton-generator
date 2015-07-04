@@ -29,7 +29,7 @@ Simply add a dependency on `phpunit/phpunit-skeleton-generator` to your project'
 
 For a system-wide installation via Composer, you can run:
 
-    composer global require 'phpunit/phpunit-skeleton-generator=*'
+    composer global require "phpunit/phpunit-skeleton-generator=*"
 
 Make sure you have `~/.composer/vendor/bin/` in your path.
 
