@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phpunit-skelgen" default="build">
- <target name="build" depends="prepare,lint"/>
+ <target name="build" depends="prepare,lint,phpcs,phpunit,phar"/>
 
  <target name="clean" description="Cleanup build artifacts">
   <delete dir="${basedir}/bin"/>
