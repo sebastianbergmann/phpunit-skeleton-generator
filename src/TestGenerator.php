@@ -319,13 +319,14 @@ class TestGenerator extends AbstractGenerator
 
         $classTemplate->setVar(
             array(
-                'namespace'          => $namespace,
-                'namespaceSeparator' => !empty($namespace) ? '\\' : '',
-                'className'          => $this->inClassName['className'],
-                'testClassName'      => $this->outClassName['className'],
-                'methods'            => $methods . $incompleteMethods,
-                'date'               => date('Y-m-d'),
-                'time'               => date('H:i:s')
+                'namespace'                 => $namespace,
+                'namespaceSeparator'        => !empty($namespace) ? '\\' : '',
+                'fullyQualifiedClassName'   => $this->inClassName['fullyQualifiedClassName'],
+                'className'                 => $this->inClassName['className'],
+                'testClassName'             => $this->outClassName['className'],
+                'methods'                   => $methods . $incompleteMethods,
+                'date'                      => date('Y-m-d'),
+                'time'                      => date('H:i:s')
             )
         );
 

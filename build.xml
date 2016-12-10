@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phpunit-skelgen" default="build">
- <target name="build" depends="prepare,lint"/>
+ <target name="build" depends="prepare,lint,phar-build"/>
 
  <target name="clean" description="Cleanup build artifacts">
   <delete dir="${basedir}/bin"/>
@@ -67,11 +67,11 @@
 
  <target name="phar"
          description="Create PHAR archive of phpunit-skelgen and all its dependencies"
-         depends="clean,composer,phar-build">
+         depends="clean,composer">
   <mkdir dir="${basedir}/build/phar"/>
  </target>
 
- <target name="phar-build">
+ <target name="phar-build" depends="phar">
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
    <arg value="${basedir}/phpunit-skelgen --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
@@ -85,7 +85,7 @@
   </copy>
 
   <copy todir="${basedir}/build/phar/php-text-template">
-   <fileset dir="${basedir}/vendor/phpunit/php-text-template/Text">
+   <fileset dir="${basedir}/vendor/phpunit/php-text-template">
     <include name="**/*.php" />
     <exclude name="**/Autoload.*" />
    </fileset>
@@ -111,7 +111,7 @@
    <arg value="--all" />
    <arg value="--phar" />
    <arg value="--output" />
-   <arg path="${basedir}/build/phpunit-skelgen-${version}.phar" />
+   <arg path="${basedir}/build/phpunit-skelgen.phar" />
    <arg value="--template" />
    <arg path="${basedir}/build/phar-autoload.php.in" />
    <arg value="--indent" />
@@ -119,7 +119,7 @@
    <arg path="${basedir}/build/phar" />
   </exec>
 
-  <chmod file="${basedir}/build/phpunit-skelgen-${version}.phar" perm="ugo+rx"/>
+  <chmod file="${basedir}/build/phpunit-skelgen.phar" perm="ugo+rx"/>
  </target>
 </project>
 
